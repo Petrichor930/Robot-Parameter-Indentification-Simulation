@@ -100,6 +100,8 @@ add_library(identification_core
   src/identification/src/robot/mujoco_regressor.cpp
   src/identification/src/robot/mujoco_piper_dynamics.cpp
   src/identification/src/robot/mujoco_piper_regressor.cpp
+  src/identification/src/robot/mujoco_caster_dynamics.cpp
+  src/identification/src/robot/mujoco_caster_regressor.cpp
 )
 target_include_directories(identification_core
   PUBLIC

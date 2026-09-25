@@ -1,0 +1,95 @@
+<mujoco model="caster3">
+  <compiler angle="radian" autolimits="true"/>
+  <option integrator="implicitfast" timestep="0.001"/>
+  <default>
+    <default class="caster3">
+      <material specular="0.5" shininess="0.25"/>
+      <joint armature="0.1" damping="1" axis="0 0 1"/>
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+      </default>
+      <default class="collision">
+        <geom type="mesh" group="3"/>
+      </default>
+    </default>
+  </default>
+  <asset>
+    <!-- 材质定义 -->
+    <material class="caster3" name="gray_light" rgba="0.84706 0.84706 0.84706 1"/>
+    <material class="caster3" name="white" rgba="1 1 1 1"/>
+    <material class="caster3" name="dark_gray" rgba="0.082353 0.082353 0.082353 1"/>
+    <material class="caster3" name="mid_gray" rgba="0.69804 0.69804 0.69804 1"/>
+    <!-- Mesh 文件 -->
+    <mesh name="base_link" content_type="model/stl" file="../asserts/base_link.STL"/>
+    <mesh name="Link1" content_type="model/stl" file="../asserts/Link1.STL"/>
+    <mesh name="Link2" content_type="model/stl" file="../asserts/Link2.STL"/>
+    <mesh name="Link3" content_type="model/stl" file="../asserts/Link3.STL"/>
+    <mesh name="Link4" content_type="model/stl" file="../asserts/Link4.STL"/>
+    <mesh name="Link5" content_type="model/stl" file="../asserts/Link5.STL"/>
+    <mesh name="Link6" content_type="model/stl" file="../asserts/Link6.STL"/>
+  </asset>
+  <worldbody>
+    <light name="top" pos="0 0 2" mode="trackcom"/>
+    <body name="base_link" childclass="caster3">
+      <!-- 基座固定在世界坐标系 -->
+      <inertial pos="0 0 0" mass="0" diaginertia="0 0 0"/>
+      <geom mesh="base_link" material="gray_light" class="visual"/>
+      <geom mesh="base_link" class="collision"/>
+      <body name="Link1">
+        <inertial pos="3.1394e-05 -0.0055261 0.040465" quat="0.638155 0.303722 -0.305623 0.638048" mass="0.17456" diaginertia="0.000147836 0.00011544 0.000101674"/>
+        <joint name="J1" range="0 3.14"/>
+        <geom mesh="Link1" material="white" class="visual"/>
+        <geom mesh="Link1" class="collision"/>
+        <body name="Link2" pos="0 0 0.051" quat="0.707105 0.707108 0 0">
+          <inertial pos="0.070068 -7.2492e-09 0.047967" quat="0 0.70712 0 0.707094" mass="0.15" diaginertia="0.00039526 0.00037191 3.5154e-05"/>
+          <joint name="J2" range="0 3.14"/>
+          <geom mesh="Link2" material="dark_gray" class="visual"/>
+          <geom mesh="Link2" class="collision"/>
+          <body name="Link3" pos="0.14 0 0">
+            <inertial pos="0.0079236 0.04229 -0.0064445" quat="0.302999 0.653186 0.281327 0.634346" mass="0.706" diaginertia="0.000709906 0.000649093 0.000578841"/>
+            <joint name="J3" range="0 3.14"/>
+            <geom mesh="Link3" material="white" class="visual"/>
+            <geom mesh="Link3" class="collision"/>
+            <body name="Link4" pos="0 0.055 -0.0115" quat="0.499998 -0.5 0.500002 -0.5">
+              <inertial pos="-1.1011e-05 0.0039186 0.12299" quat="0.698448 -0.103868 0.104701 0.7003" mass="0.195" diaginertia="2.99112e-05 2.4348e-05 1.87588e-05"/>
+              <joint name="J4" range="-2.1 3.14"/>
+              <geom mesh="Link4" material="mid_gray" class="visual"/>
+              <geom mesh="Link4" class="collision"/>
+              <body name="Link5" pos="0 0 0.1299" quat="0.707105 0.707108 0 0">
+                <inertial pos="8.6583e-05 0.044187 0.0060608" quat="0.657632 0.254897 -0.258483 0.660101" mass="0.207" diaginertia="2.72575e-05 2.4466e-05 2.05615e-05"/>
+                <joint name="J5" range="-1.57 1.57"/>
+                <geom mesh="Link5" material="mid_gray" class="visual"/>
+                <geom mesh="Link5" class="collision"/>
+                <body name="Link6" quat="0.707105 -0.707108 0 0">
+                  <inertial pos="-0.0002507 -0.00023025 0.099678" quat="0.402513 0.00376972 0.0085644 0.915367" mass="0.017338" diaginertia="6.095e-06 5.96074e-06 1.83696e-06"/>
+                  <joint name="J6" range="-1.57 3.14"/>
+                  <geom mesh="Link6" material="mid_gray" class="visual"/>
+                  <geom mesh="Link6" class="collision"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <motor name="act_J1" joint="J1" ctrlrange="-10 10" ctrllimited="true"/>
+    <motor name="act_J2" joint="J2" ctrlrange="-10 10" ctrllimited="true"/>
+    <motor name="act_J3" joint="J3" ctrlrange="-10 10" ctrllimited="true"/>
+    <motor name="act_J4" joint="J4" ctrlrange="-0.8 0.8" ctrllimited="true"/>
+    <motor name="act_J5" joint="J5" ctrlrange="-0.8 0.8" ctrllimited="true"/>
+    <motor name="act_J6" joint="J6" ctrlrange="-0.8 0.8" ctrllimited="true"/>
+  </actuator>
+  <keyframe>
+    <key name="home" qpos="0 0 0 0 0 0" ctrl="0 0 0 0 0 0"/>
+  </keyframe>
+  <contact>
+    <exclude body1="base_link" body2="Link1"/>
+    <exclude body1="Link1" body2="Link2"/>
+    <exclude body1="Link2" body2="Link3"/>
+    <exclude body1="Link3" body2="Link4"/>
+    <exclude body1="Link4" body2="Link5"/>
+    <exclude body1="Link5" body2="Link6"/>
+  </contact>
+</mujoco>

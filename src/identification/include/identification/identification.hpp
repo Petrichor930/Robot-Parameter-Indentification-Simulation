@@ -5,6 +5,7 @@
 #include "identification/data_loader.hpp"
 #include "mujoco_regressor.hpp"
 #include "mujoco_piper_regressor.hpp"
+#include "mujoco_caster_regressor.hpp"
 #include "robot/robot_model.hpp"
 #include <memory>
 #include <string>
@@ -20,7 +21,7 @@ public:
   /**
    * @brief 构造函数
    *
-   * @param robot_type 机械臂类型，支持 "panda" / "piper"
+   * @param robot_type 机械臂类型，支持 "panda" / "piper" / "caster"
    * @param model 保留用于兼容性的机器人模型指针
    */
   explicit Identification(const std::string &robot_type = "panda",
@@ -83,6 +84,7 @@ private:
   std::string robot_type_;
   mujoco_dynamics::MuJoCoRegressor panda_regressor_;
   mujoco_dynamics::MuJoCoPiperRegressor piper_regressor_;
+  mujoco_dynamics::MuJoCoCasterRegressor caster_regressor_;
 };
 
 #endif // IDENTIFICATION_IDENTIFICATION_HPP_

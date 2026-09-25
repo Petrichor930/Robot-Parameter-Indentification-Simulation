@@ -338,7 +338,7 @@ void PandaSimulator::glfwCursorPosCallback(GLFWwindow *window, double xpos,
 
   if (action != mjMOUSE_NONE) {
     mjv_moveCamera(self->model_.get(), action, dx / static_cast<double>(height),
-                   dy / static_cast<double>(height), &self->scene_,
+                   dy / static_cast<double>(height),
                    &self->camera_);
   }
 }
@@ -350,7 +350,7 @@ void PandaSimulator::glfwScrollCallback(GLFWwindow *window, double, double yoffs
   }
 
   mjv_moveCamera(self->model_.get(), mjMOUSE_ZOOM, 0.0, -0.05 * yoffset,
-                 &self->scene_, &self->camera_);
+                  &self->camera_);
 }
 
 void PandaSimulator::startViewer() {

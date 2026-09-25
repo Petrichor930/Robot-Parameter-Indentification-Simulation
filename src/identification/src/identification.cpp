@@ -73,6 +73,8 @@ void Identification::preprocess(ExperimentData &data) {
 std::size_t Identification::numParameters(MuJoCoParamFlags flags) const {
   if (robot_type_ == "piper") {
     return piper_regressor_.numParameters(flags);
+  } else if (robot_type_ == "caster") {
+    return caster_regressor_.numParameters(flags);
   }
   return panda_regressor_.numParameters(flags);
 }
@@ -81,6 +83,8 @@ Eigen::VectorXd
 Identification::getGroundTruthParameters(MuJoCoParamFlags flags) const {
   if (robot_type_ == "piper") {
     return piper_regressor_.computeParameterVector(flags);
+  } else if (robot_type_ == "caster") {
+    return caster_regressor_.computeParameterVector(flags);
   }
   return panda_regressor_.computeParameterVector(flags);
 }
@@ -90,6 +94,8 @@ Eigen::MatrixXd Identification::computeObservationMatrix(
     const Eigen::MatrixXd &Qdd, MuJoCoParamFlags flags) const {
   if (robot_type_ == "piper") {
     return piper_regressor_.computeObservationMatrix(Q, Qd, Qdd, flags);
+  } else if (robot_type_ == "caster") {
+    return caster_regressor_.computeObservationMatrix(Q, Qd, Qdd, flags);
   }
   return panda_regressor_.computeObservationMatrix(Q, Qd, Qdd, flags);
 }
@@ -103,7 +109,8 @@ Eigen::VectorXd Identification::solve(const ExperimentData &data,
 
   std::cout << "Building observation matrix W (using "
             << (robot_type_ == "piper" ? "MuJoCoPiperRegressor"
-                                        : "MuJoCoRegressor")
+                : robot_type_ == "caster" ? "MuJoCoCasterRegressor"
+                                          : "MuJoCoRegressor")
             << ")..." << std::endl;
 
   const double qdd_threshold = 10.0;

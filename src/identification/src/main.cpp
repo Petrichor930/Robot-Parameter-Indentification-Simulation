@@ -3,6 +3,7 @@
 #include "identification/algorithms.hpp"
 #include "mujoco_panda_dynamics.hpp"
 #include "mujoco_piper_dynamics.hpp"
+#include "mujoco_caster_dynamics.hpp"
 
 #include <Eigen/Core>
 
@@ -163,7 +164,11 @@ std::string normalizeRobotType(std::string robot) {
 }
 
 std::size_t robotDof(const std::string &robot) {
-  if (robot == "piper") {
+  if (normalizeRobotType(robot) == "piper") {
+    return 6;
+  } else if (normalizeRobotType(robot) == "caster") {
+    return 6;
+  } else if (normalizeRobotType(robot) == "myrobot") {
     return 6;
   }
   return 7;
@@ -336,8 +341,8 @@ int main(int argc, char **argv) {
     }
 
     config.robot = normalizeRobotType(config.robot);
-    if (config.robot != "panda" && config.robot != "piper") {
-      throw std::runtime_error("robot 仅支持 panda 或 piper");
+    if (config.robot != "panda" && config.robot != "piper" && config.robot != "myrobot" && config.robot != "caster") {
+      throw std::runtime_error("robot 仅支持 panda, piper, myrobot 或 caster");
     }
 
     if (config.data_file.empty()) {
@@ -354,6 +359,32 @@ int main(int argc, char **argv) {
 
     if (config.robot == "piper") {
       mujoco_dynamics::MuJoCoPiperDynamics dynamics;
+      double sum_sq_error = 0.0;
+      double max_error = 0.0;
+      const std::size_t n_dof = data.n_dof;
+      for (std::size_t i = 0; i < data.n_samples; ++i) {
+        const Eigen::VectorXd q =
+            data.q.row(static_cast<Eigen::Index>(i)).transpose();
+        const Eigen::VectorXd qd =
+            data.qd.row(static_cast<Eigen::Index>(i)).transpose();
+        const Eigen::VectorXd qdd =
+            data.qdd.row(static_cast<Eigen::Index>(i)).transpose();
+        const Eigen::VectorXd tau = dynamics.computeInverseDynamics(q, qd, qdd);
+        for (std::size_t j = 0; j < n_dof; ++j) {
+          const double error =
+              tau(static_cast<Eigen::Index>(j)) -
+              data.tau(static_cast<Eigen::Index>(i), static_cast<Eigen::Index>(j));
+          sum_sq_error += error * error;
+          max_error = std::max(max_error, std::abs(error));
+        }
+      }
+      const double rmse = std::sqrt(
+          sum_sq_error /
+          (static_cast<double>(data.n_samples) * static_cast<double>(n_dof)));
+      std::cout << "MuJoCo 动力学基准 RMSE: " << rmse << " Nm, Max Error: "
+                << max_error << " Nm" << std::endl;
+    } else if (config.robot == "caster") {
+      mujoco_dynamics::MuJoCoCasterDynamics dynamics;
       double sum_sq_error = 0.0;
       double max_error = 0.0;
       const std::size_t n_dof = data.n_dof;
