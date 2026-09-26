@@ -162,3 +162,8 @@ add_executable(regressor_test
   src/identification/src/regressor_test.cpp
 )
 target_link_libraries(regressor_test PRIVATE identification_core)
+
+add_executable(fk_compare
+  src/identification/src/fk_compare.cpp
+)
+target_link_libraries(fk_compare PRIVATE Eigen3::Eigen)

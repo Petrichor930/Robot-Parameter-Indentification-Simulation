@@ -7,12 +7,12 @@ MuJoCoCasterDynamics::MuJoCoCasterDynamics() { initBodies(); }
 void MuJoCoCasterDynamics::initBodies() {
   // base_link (link=0.36445kg + motor=0.33kg = 0.69445kg)
   bodies_[0].name = "base_link";
-  bodies_[0].quat = Quaterniond(0.707107, -0.707107, 0, 0);
-  bodies_[0].mass = 0.69445;
-  bodies_[0].com = Vector3d(0.0007243342069, -0.0006176415941, -0.0007868908201);
-  bodies_[0].Ixx = 0.0014801;
-  bodies_[0].Iyy = 0.0017385;
-  bodies_[0].Izz = 0.003218;
+  bodies_[0].quat = Quaterniond(1, 0, 0, 0);
+  bodies_[0].mass = 0;
+  bodies_[0].com = Vector3d(0, 0, 0);
+  bodies_[0].Ixx = 0;
+  bodies_[0].Iyy = 0;
+  bodies_[0].Izz = 0;
   bodies_[0].Ixy = 0;
   bodies_[0].Ixz = 0;
   bodies_[0].Iyz = 0;
@@ -20,9 +20,9 @@ void MuJoCoCasterDynamics::initBodies() {
 
   // Link1 (link=0.04981kg + motor=0.33kg = 0.37981kg)
   bodies_[1].name = "Link1";
-  bodies_[1].pos = Vector3d(0.065, 0.0055, 0.061078);
-  bodies_[1].quat = Quaterniond(0.499998, 0.5, 0.5, -0.500002);
-  bodies_[1].mass = 0.37981;
+  bodies_[1].pos = Vector3d(0, 0, 0);
+  bodies_[1].quat = Quaterniond(1, 0, 0, 0);
+  bodies_[1].mass = 0.17456;
   bodies_[1].com = Vector3d(4.567283647e-06, -0.03596375972, 0.04973514334);
   bodies_[1].Ixx = 5.006274946e-05;
   bodies_[1].Iyy = 5.252226745e-05;
@@ -34,9 +34,9 @@ void MuJoCoCasterDynamics::initBodies() {
 
   // Link2 (link=0.15000kg + motor=0.33kg = 0.48000kg)
   bodies_[2].name = "Link2";
-  bodies_[2].pos = Vector3d(0, -0.0405, 0.051);
+  bodies_[2].pos = Vector3d(0, 0, 0.051);
   bodies_[2].quat = Quaterniond(0.707105, 0.707108, 0, 0);
-  bodies_[2].mass = 0.48000;
+  bodies_[2].mass = 0.15000;
   bodies_[2].com = Vector3d(0.1181465625, -2.89639375e-08, 0.01500084375);
   bodies_[2].Ixx = 1.849692314e-05;
   bodies_[2].Iyy = 0.0002242325554;
@@ -50,7 +50,7 @@ void MuJoCoCasterDynamics::initBodies() {
   bodies_[3].name = "Link3";
   bodies_[3].pos = Vector3d(0.14, 0, 0);
   bodies_[3].quat = Quaterniond(1, 0, 0, 0);
-  bodies_[3].mass = 0.85600;
+  bodies_[3].mass = 0.70600;
   bodies_[3].com = Vector3d(0.01097714533, 0.03424524953, -0.0142572235);
   bodies_[3].Ixx = 0.0001407486393;
   bodies_[3].Iyy = 0.0002312706286;
@@ -62,9 +62,9 @@ void MuJoCoCasterDynamics::initBodies() {
 
   // Link4 (link=0.19500kg + motor=0.15kg = 0.34500kg)
   bodies_[4].name = "Link4";
-  bodies_[4].pos = Vector3d(0, 0.055, -0.052);
+  bodies_[4].pos = Vector3d(0, 0.055, -0.0115);
   bodies_[4].quat = Quaterniond(0.499998, -0.5, 0.500002, -0.5);
-  bodies_[4].mass = 0.34500;
+  bodies_[4].mass = 0.19500;
   bodies_[4].com = Vector3d(1.927351739e-05, 0.001791914348, 0.1265872609);
   bodies_[4].Ixx = 2.056062295e-05;
   bodies_[4].Iyy = 2.046667585e-05;
@@ -78,7 +78,7 @@ void MuJoCoCasterDynamics::initBodies() {
   bodies_[5].name = "Link5";
   bodies_[5].pos = Vector3d(0, 0, 0.1299);
   bodies_[5].quat = Quaterniond(0.707105, 0.707108, 0, 0);
-  bodies_[5].mass = 0.32400;
+  bodies_[5].mass = 0.20700;
   bodies_[5].com = Vector3d(2.229095741e-05, 0.02488656481, 0.002743963889);
   bodies_[5].Ixx = 1.906853156e-05;
   bodies_[5].Iyy = 1.375311978e-05;
@@ -92,7 +92,7 @@ void MuJoCoCasterDynamics::initBodies() {
   bodies_[6].name = "Link6";
   bodies_[6].pos = Vector3d(0, 0, 0);
   bodies_[6].quat = Quaterniond(0.707105, -0.707108, 0, 0);
-  bodies_[6].mass = 0.02600;
+  bodies_[6].mass = 0.017338;
   bodies_[6].com = Vector3d(-0.000249497, -0.000229533, 0.100505);
   bodies_[6].Ixx = 1.769993054e-06;
   bodies_[6].Iyy = 1.772660687e-06;
@@ -104,7 +104,7 @@ void MuJoCoCasterDynamics::initBodies() {
 
   // Joint axes and parameters
   bodies_[1].joint_axis = Vector3d(0, 0, 1);
-  bodies_[2].joint_axis = Vector3d(0, 0, -1);
+  bodies_[2].joint_axis = Vector3d(0, 0, 1);
   bodies_[3].joint_axis = Vector3d(0, 0, -1);
   bodies_[4].joint_axis = Vector3d(0, 0, 1);
   bodies_[5].joint_axis = Vector3d(0, 0, 1);
